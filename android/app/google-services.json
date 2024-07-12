@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "258164257910",
+    "project_id": "gossip-go----backend",
+    "storage_bucket": "gossip-go----backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258164257910:android:3540e469b16e7cb4511b57",
+        "android_client_info": {
+          "package_name": "com.gossip_go.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4eTR6DuLSxvhIc9pg5X10FT0c-z0XBgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
