@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip_go/features/auth/controller/auth_controller.dart';
@@ -16,14 +17,21 @@ class LoginScreen extends ConsumerWidget {
     const verifyText = 'Gossip Go will need to verify your phone number.';
     const btnText = 'Pick Country';
     final Size(:width, :height) = MediaQuery.sizeOf(context);
+    var camera =
+        ModalRoute.of(context)!.settings.arguments as CameraDescription;
     return Scaffold(
         backgroundColor: backgroundColor,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: backgroundColor,
-          title: const Text(
-            loginAppBarTitle,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          title: const FittedBox(
+            child: Text(
+              loginAppBarTitle,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
           centerTitle: true,
         ),
@@ -74,13 +82,15 @@ class LoginScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              const Expanded(flex: 2, child: Center(child: LoginScreenButton()))
+              Expanded(flex: 2, child: Center(child: LoginScreenButton(camera)))
             ]),
             Builder(
               builder: (context) {
                 var state = ref.watch(authControllerProvider);
                 if (state is AuthLoadingState) {
-                  return const CircularProgressIndicator();
+                  return const CircularProgressIndicator(
+                    color: tabColor,
+                  );
                 } else {
                   return const SizedBox();
                 }

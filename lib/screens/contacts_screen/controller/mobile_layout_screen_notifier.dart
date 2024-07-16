@@ -29,8 +29,7 @@ class MobileLayoutScreenNotifier extends Notifier<ContactsScreenStates> {
     bottomBarCurrentIndex = index;
     fabIcon = switch (index) {
       0 => Icons.add_comment,
-      1 => Icons.camera_alt,
-      _ => Icons.add_call,
+      _ => Icons.camera_alt,
     };
     state = ContactScreenLoadedState();
   }

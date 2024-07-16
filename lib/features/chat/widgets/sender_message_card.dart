@@ -15,16 +15,14 @@ class SenderMessageCard extends StatelessWidget {
     required this.messageType,
     required this.onRightSwipe,
     required this.repliedText,
-    required this.userName,
+    required this.receiverUserName,
     required this.repliedMessageType,
     required this.isGroupChat,
+    required this.senderUserName,
   });
-  final String message;
-  final String date;
+  final String message, date, repliedText, receiverUserName, senderUserName;
   final MessageEnum messageType;
   final SwipeCallBack onRightSwipe;
-  final String repliedText;
-  final String userName;
   final MessageEnum repliedMessageType;
   final bool isGroupChat;
   @override
@@ -86,7 +84,7 @@ class SenderMessageCard extends StatelessWidget {
                                     padding:
                                         EdgeInsets.only(left: width * 0.02),
                                     child: Text(
-                                      userName,
+                                      receiverUserName,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: tabColor,
@@ -139,7 +137,7 @@ class SenderMessageCard extends StatelessWidget {
                     left: 10,
                     top: 5,
                     child: Text(
-                      userName,
+                      senderUserName,
                       style: TextStyle(
                         color: Color.fromARGB(
                           random.nextInt(max),

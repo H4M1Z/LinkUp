@@ -1,6 +1,6 @@
-import 'dart:developer';
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,15 +40,17 @@ final class AuthController extends Notifier<AuthStates> {
     return user;
   }
 
-  void signInWithPhoneNumber({required BuildContext context}) async {
+  void signInWithPhoneNumber(
+      {required BuildContext context,
+      required CameraDescription camera}) async {
     try {
       state = AuthLoadingState();
       if (countryCode.isNotEmpty && loginFieldController.text.isNotEmpty) {
         var phoneNumber = loginFieldController.text.trim();
-        log('$countryCode$phoneNumber');
         _authRepository.signInWithPoneNumber(
-            context: context, phoneNumber: '$countryCode$phoneNumber');
-        state = const AuthLoadedState();
+            context: context,
+            phoneNumber: '$countryCode$phoneNumber',
+            camera: camera);
       }
     } catch (e) {
       state = const AuthErrorState(message: _errorMessage);
@@ -70,14 +72,16 @@ final class AuthController extends Notifier<AuthStates> {
       {required BuildContext context,
       required,
       required String verificationId,
-      required String userOtp}) {
+      required String userOtp,
+      required CameraDescription camera}) {
     try {
       state = AuthLoadingState();
       _authRepository
           .veriftyOtp(
               verificationId: verificationId,
               context: context,
-              userOtp: userOtp)
+              userOtp: userOtp,
+              camera: camera)
           .then(
             (value) => state = const AuthLoadedState(),
           );
@@ -92,14 +96,15 @@ final class AuthController extends Notifier<AuthStates> {
     state = const AuthLoadedState();
   }
 
-  void saveUserInfoToFireStore({required BuildContext context}) {
+  void saveUserInfoToFireStore(
+      {required BuildContext context, required CameraDescription camera}) {
     state = AuthLoadingState();
     _authRepository.saveUserDataToFireBaseFirestore(
         userName: userNameController.text.trim(),
         profilePic: image,
         ref: ref,
-        context: context);
-    state = const AuthLoadedState();
+        context: context,
+        camera: camera);
   }
 
 //this function will tell us wether a user is online or offline and we will continouly listen to the stream so the data also updates on other devices, otherwise we woukd have to send the function from every device to check that if other person is online or off line

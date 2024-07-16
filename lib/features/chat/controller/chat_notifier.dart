@@ -2,8 +2,8 @@
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
-// import 'package:audioplayers_platform_interface/src/api/player_state.dart'
-//     as playerState;
+import 'package:audioplayers_platform_interface/src/api/player_state.dart'
+    as playersState;
 import 'package:cached_video_player/cached_video_player.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
@@ -57,15 +57,49 @@ class ChatNotifer extends Notifier<ChatScreenStates> {
   var isRecording = false;
   // wether audio is playing or not
   var isAudioPlaying = false;
+  //audio duration
+  var duration = Duration.zero;
+  //current position of audio
+  var audioPosition = Duration.zero;
   // audio icon to display
-  var audioIcon = Icons.play_circle_fill;
+  var audioIcon = Icons.play_arrow_rounded;
   //chached groups
   var groupChats = <GroupModel>[];
   @override
   ChatScreenStates build() {
     _soundRecorder = FlutterSoundRecorder();
     _openAudioRecorder();
+    _audioPlayer.onPlayerStateChanged.listen(
+      (playerState) {
+        state = ChatLoadingState();
+        isAudioPlaying = playerState == playersState.PlayerState.playing;
+        state = ChatLoadedState();
+      },
+    );
+    _audioPlayer.onDurationChanged.listen(
+      (newDuration) {
+        state = ChatLoadingState();
+        duration = newDuration;
+        state = ChatLoadedState();
+      },
+    );
 
+    _audioPlayer.onPositionChanged.listen(
+      (position) {
+        state = ChatLoadingState();
+        audioPosition = position;
+        state = ChatLoadedState();
+      },
+    );
+    _audioPlayer.onPlayerComplete.listen(
+      (event) {
+        state = ChatLoadingState();
+        duration = Duration.zero;
+        audioPosition = Duration.zero;
+        audioIcon = Icons.play_arrow_rounded;
+        state = ChatLoadedState();
+      },
+    );
     ref.onDispose(
       () {
         messageTextController.dispose();
@@ -341,15 +375,22 @@ class ChatNotifer extends Notifier<ChatScreenStates> {
   void onAudioIconTap({required String audioSource}) async {
     state = ChatLoadingState();
     if (isAudioPlaying) {
-      audioIcon = Icons.play_circle_fill_outlined;
-      await _audioPlayer.pause();
+      audioIcon = Icons.play_arrow_rounded;
+      _audioPlayer.pause();
       isAudioPlaying = false;
     } else {
-      audioIcon = Icons.pause_circle_filled_sharp;
-      await _audioPlayer.play(UrlSource(audioSource));
+      audioIcon = Icons.pause_rounded;
+      _audioPlayer.play(UrlSource(audioSource));
       isAudioPlaying = true;
     }
     state = ChatLoadedState();
+  }
+
+  //slider position
+  void onSliderChange(double value) {
+    final pos = Duration(seconds: value.toInt());
+    _audioPlayer.seek(pos);
+    _audioPlayer.resume();
   }
 
   //this function will set/update the existing message is seen property to seen

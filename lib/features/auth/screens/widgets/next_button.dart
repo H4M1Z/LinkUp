@@ -1,16 +1,18 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip_go/features/auth/controller/auth_controller.dart';
 import 'package:gossip_go/utils/colors.dart';
 
 class LoginScreenButton extends ConsumerWidget {
-  const LoginScreenButton({super.key});
+  const LoginScreenButton(this.camera, {super.key});
+  final CameraDescription camera;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void sendPhoneNumber() {
       ref
           .read(authControllerProvider.notifier)
-          .signInWithPhoneNumber(context: context);
+          .signInWithPhoneNumber(context: context, camera: camera);
     }
 
     const btntText = 'Next';

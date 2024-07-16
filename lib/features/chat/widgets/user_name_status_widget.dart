@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip_go/features/auth/controller/auth_controller.dart';
 import 'package:gossip_go/features/chat/controller/chat_notifier.dart';
@@ -30,10 +30,18 @@ class UserNameAndStatus extends ConsumerWidget {
                       flex: 2,
                     ),
                     Expanded(
-                        flex: 10,
-                        child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(name))),
+                      flex: 10,
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Text(
+                          name,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: height * 0.025,
+                          ),
+                        ),
+                      ),
+                    ),
                     Expanded(
                       flex: 10,
                       child: RichText(
@@ -41,7 +49,20 @@ class UserNameAndStatus extends ConsumerWidget {
                         for (int i = 0;
                             i < snapshot.data!.groupMemberIds.length;
                             i++)
-                          TextSpan(text: snapshot.data!.groupMemberIds[i])
+                          if (i == snapshot.data!.groupMemberIds.length - 1)
+                            TextSpan(
+                              text: snapshot.data!.groupMemberNames[i],
+                              style: TextStyle(
+                                fontSize: height * 0.018,
+                              ),
+                            )
+                          else
+                            TextSpan(
+                              text: '${snapshot.data!.groupMemberNames[i]},',
+                              style: TextStyle(
+                                fontSize: height * 0.018,
+                              ),
+                            )
                       ])),
                     )
                   ],

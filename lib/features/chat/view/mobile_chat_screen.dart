@@ -58,15 +58,21 @@ class MobileChatScreen extends ConsumerWidget {
           ),
           centerTitle: false,
           actions: [
-            IconButton(
-              onPressed: () => ref.read(callNotifierProvider.notifier).makeCall(
-                    context: context,
-                    callReceievrPic: info.profilePic,
-                    callReceiverName: info.name,
-                    callReceiverUid: info.groupOrReceiverId,
-                    isGroupChat: info.isgroupChat,
-                  ),
-              icon: const Icon(Icons.videocam_outlined),
+            Padding(
+              padding: EdgeInsets.only(
+                right: width * 0.1,
+              ),
+              child: IconButton(
+                onPressed: () =>
+                    ref.read(callNotifierProvider.notifier).makeCall(
+                          context: context,
+                          callReceievrPic: info.profilePic,
+                          callReceiverName: info.name,
+                          callReceiverUid: info.groupOrReceiverId,
+                          isGroupChat: info.isgroupChat,
+                        ),
+                icon: const Icon(Icons.videocam_outlined),
+              ),
             ),
           ],
         ),

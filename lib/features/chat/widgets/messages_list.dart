@@ -50,30 +50,33 @@ class MessagesList extends ConsumerWidget {
                       message: messageData.message,
                       isMe: true,
                       messageType: messageData.messageType,
+                      messageSenderName: messageData.senderName,
                     ),
                   );
             },
             isSeen: messageData.isSeen,
           );
         }
-
         return SenderMessageCard(
           messageType: messageData.messageType,
           message: messageData.message,
           date: DateFormat("h:mma").format(messageData.timeSent),
           repliedText: messageData.replyText,
           repliedMessageType: messageData.repliedMessageType,
-          userName: messageData.repliedTo,
+          receiverUserName: messageData.repliedTo,
           onRightSwipe: (details) {
             ref.read(messageReplyProvider.notifier).onMessageSwipe(
                   messageReply: MessageReply(
                     message: messageData.message,
                     isMe: false,
                     messageType: messageData.messageType,
+                    messageSenderName: messageData.senderName,
                   ),
                 );
           },
           isGroupChat: isGroupChat,
+          // this field will be used to identify which user send the message in the group chat
+          senderUserName: messageData.senderName,
         );
       },
     );

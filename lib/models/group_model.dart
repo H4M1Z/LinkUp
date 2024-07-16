@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class GroupModel {
   final String lastMessageSenderId;
   final String groupName;
@@ -5,6 +6,7 @@ class GroupModel {
   final String lastMessage;
   final String groupPic;
   final List<String> groupMemberIds;
+  final List<String> groupMemberNames;
   final DateTime timeSent;
   GroupModel({
     required this.lastMessageSenderId,
@@ -13,6 +15,7 @@ class GroupModel {
     required this.lastMessage,
     required this.groupPic,
     required this.groupMemberIds,
+    required this.groupMemberNames,
     required this.timeSent,
   });
 
@@ -24,6 +27,7 @@ class GroupModel {
       'lastMessage': lastMessage,
       'groupPic': groupPic,
       'groupMemberIds': groupMemberIds,
+      'groupMemberNames': groupMemberNames,
       'timeSent': timeSent.millisecondsSinceEpoch,
     };
   }
@@ -35,9 +39,8 @@ class GroupModel {
       groupId: map['groupId'] as String,
       lastMessage: map['lastMessage'] as String,
       groupPic: map['groupPic'] as String,
-      groupMemberIds: List<String>.from(
-        (map['groupMemberIds'] as List),
-      ),
+      groupMemberIds: List<String>.from((map['groupMemberIds'] as List)),
+      groupMemberNames: List<String>.from((map['groupMemberNames'] as List)),
       timeSent: DateTime.fromMillisecondsSinceEpoch(map['timeSent'] as int),
     );
   }

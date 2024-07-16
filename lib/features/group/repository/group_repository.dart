@@ -38,7 +38,7 @@ class GroupRepository {
       //first we will check if the user with the selected contact is in the app or not
       var currentUser = GetIt.I<UserModel>();
       List<String> groupUsersUids = [currentUser.uid];
-
+      List<String> groupMemberNames = [];
       for (var i = 0; i < selectedContacts.length; i++) {
         if (selectedContacts[i].phones.isNotEmpty) {
           var firestoreUser = await firestore
@@ -56,6 +56,7 @@ class GroupRepository {
           // Number 2 :
           if (firestoreUser.docs.isNotEmpty && firestoreUser.docs[0].exists) {
             groupUsersUids.add(firestoreUser.docs[0].data()['uid']);
+            groupMemberNames.add(firestoreUser.docs[0].data()['name']);
           }
         }
       }
@@ -71,6 +72,7 @@ class GroupRepository {
         lastMessage: '',
         groupPic: groupPic,
         groupMemberIds: groupUsersUids,
+        groupMemberNames: [...groupMemberNames, 'You'],
         timeSent: DateTime.now(),
       );
       // now we will make a group in the groups collection

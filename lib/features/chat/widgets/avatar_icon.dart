@@ -10,7 +10,7 @@ class AvatarIcon extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(chatNotifierProvider);
-    //when sending the message we will check if the message if xingle chat message or group chat message
+    //when sending the message we will check if the message if single chat message or group chat message
     void sendTextMessage() async {
       if (ref.read(chatNotifierProvider.notifier).avatarIcon == Icons.send) {
         ref.read(chatNotifierProvider.notifier).sendTextMessage(

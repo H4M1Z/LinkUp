@@ -48,13 +48,6 @@ class _MobileLayoutScreenBottomBarState
                 Icons.auto_stories_sharp,
                 color: bottomBarSelectedIconColor,
               )),
-          BottomNavigationBarItem(
-              label: bottomBarCalls,
-              icon: Icon(Icons.phone_outlined, color: Colors.white),
-              activeIcon: Icon(
-                Icons.phone,
-                color: bottomBarSelectedIconColor,
-              )),
         ]);
   }
 }

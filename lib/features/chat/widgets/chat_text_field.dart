@@ -67,7 +67,7 @@ class ChatTextField extends ConsumerWidget {
                 messageReplyType: state.messageReply.messageType,
                 isMe: state.messageReply.isMe,
                 replyingText: state.messageReply.message,
-                receiverName: receiverName,
+                receiverName: state.messageReply.messageSenderName,
               );
             } else {
               return const SizedBox();

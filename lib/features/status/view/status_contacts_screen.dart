@@ -16,15 +16,6 @@ class StatusScreen extends ConsumerWidget {
     final Size(:width, :height) = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: width * 0.1),
-            child: const Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-          )
-        ],
         title: const Text(
           statusScreenAppBarTitle,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),

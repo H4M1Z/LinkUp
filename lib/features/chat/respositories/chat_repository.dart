@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -146,20 +147,22 @@ class ChatRepository {
   }) async {
     var currentUser = GetIt.I<UserModel>();
     var message = MessageModel(
-        senderId: currentUser.uid,
-        receiverId: groupOrReceiverId,
-        message: text,
-        messageType: messageType,
-        timeSent: timeSent,
-        messageId: messageId,
-        isSeen: false,
-        replyText: messageReply == null ? '' : messageReply.message,
-        repliedTo: messageReply == null
-            ? ''
-            : messageReply.isMe
-                ? senderUserName
-                : receiverUserName ?? '',
-        repliedMessageType: repliedMessageType);
+      senderId: currentUser.uid,
+      receiverId: groupOrReceiverId,
+      senderName: senderUserName,
+      message: text,
+      messageType: messageType,
+      timeSent: timeSent,
+      messageId: messageId,
+      isSeen: false,
+      replyText: messageReply == null ? '' : messageReply.message,
+      repliedTo: messageReply == null
+          ? ''
+          : messageReply.isMe
+              ? senderUserName
+              : receiverUserName ?? '',
+      repliedMessageType: repliedMessageType,
+    );
     if (isGroupChat) {
       await firestore
           .collection(_groupsCollection)
@@ -230,7 +233,7 @@ class ChatRepository {
 
   //this will get the groupChats
   Stream<List<GroupModel>> getGroupChats() {
-    //we could use map but in this we are going too convert all the chats documents to our model and we will have to connect to firestore so we will use the async Map
+    //we could use map but in this we are going too convert all the chats documents to our model
     var currentUser = GetIt.I<UserModel>();
     return firestore.collection(_groupsCollection).snapshots().map(
       (groups) {
@@ -273,6 +276,7 @@ class ChatRepository {
           var chatMessage = MessageModel.fromMap(message.data());
           chatMessages.add(chatMessage);
         }
+        log(chatMessages.length.toString());
         return chatMessages;
       },
     );

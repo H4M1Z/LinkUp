@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:gossip_go/utils/messages_enum.dart';
 
 class MessageModel {
   final String senderId;
+  // this name will be used for the group chat to identify which user is sending message
+  final String senderName;
   // we need receiverid to see if the message is seen by the reciver or not
   final String receiverId;
   final String message;
@@ -15,6 +18,7 @@ class MessageModel {
   final MessageEnum repliedMessageType;
   MessageModel({
     required this.senderId,
+    required this.senderName,
     required this.receiverId,
     required this.message,
     required this.messageType,
@@ -29,6 +33,7 @@ class MessageModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'senderId': senderId,
+      'senderName': senderName,
       'receiverId': receiverId,
       'message': message,
       'messageType': messageType.type,
@@ -44,6 +49,7 @@ class MessageModel {
   factory MessageModel.fromMap(Map<String, dynamic> map) {
     return MessageModel(
       senderId: map['senderId'] as String,
+      senderName: map['senderName'] as String,
       receiverId: map['receiverId'] as String,
       message: map['message'] as String,
       messageType: (map['messageType'] as String).toEnum(),

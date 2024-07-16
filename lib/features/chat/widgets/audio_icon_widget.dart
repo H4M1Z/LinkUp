@@ -7,7 +7,12 @@ class AudioIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final Size(:height) = MediaQuery.sizeOf(context);
     ref.watch(chatNotifierProvider);
-    return Icon(ref.read(chatNotifierProvider.notifier).audioIcon);
+    return Icon(
+      ref.read(chatNotifierProvider.notifier).audioIcon,
+      color: Colors.grey,
+      size: height * 0.05,
+    );
   }
 }

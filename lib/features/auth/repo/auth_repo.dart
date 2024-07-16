@@ -3,6 +3,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,9 @@ class AuthRepository {
   }
 
   Future<void> signInWithPoneNumber(
-      {required BuildContext context, required String phoneNumber}) async {
+      {required BuildContext context,
+      required String phoneNumber,
+      required CameraDescription camera}) async {
     try {
       auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
@@ -53,8 +56,8 @@ class AuthRepository {
         },
         verificationFailed: (error) => throw Exception(error.message),
         codeSent: (verificationId, forceResendingToken) {
-          Navigator.of(context)
-              .pushNamed(OTPScreen.pageName, arguments: verificationId);
+          Navigator.of(context).pushNamed(OTPScreen.pageName,
+              arguments: [verificationId, camera]);
         },
         codeAutoRetrievalTimeout: (verificationId) {},
       );
@@ -63,17 +66,20 @@ class AuthRepository {
     }
   }
 
-  Future<void> veriftyOtp(
-      {required BuildContext context,
-      required,
-      required String verificationId,
-      required String userOtp}) async {
+  Future<void> veriftyOtp({
+    required BuildContext context,
+    required,
+    required String verificationId,
+    required String userOtp,
+    required CameraDescription camera,
+  }) async {
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: verificationId, smsCode: userOtp);
       await auth.signInWithCredential(credential);
       Navigator.of(context).pushNamedAndRemoveUntil(
         UserInformationScreen.pageName,
+        arguments: camera,
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {
@@ -85,7 +91,8 @@ class AuthRepository {
       {required String userName,
       required File? profilePic,
       required NotifierProviderRef ref,
-      required BuildContext context}) async {
+      required BuildContext context,
+      required CameraDescription camera}) async {
     // we have to uplaod the image to firebase storage and it will give us a download url and we need to store it in the firestore we will use the same uid to store it to storage and firestore as well
     try {
       String uid = auth.currentUser!.uid;
@@ -107,6 +114,7 @@ class AuthRepository {
       await fireStore.collection(_usersCollection).doc(uid).set(user.toMap());
       Navigator.of(context).pushNamedAndRemoveUntil(
         MobileLayoutScreen.pageName,
+        arguments: camera,
         (route) => false,
       );
     } catch (e) {

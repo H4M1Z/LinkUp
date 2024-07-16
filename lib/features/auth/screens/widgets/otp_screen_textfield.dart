@@ -1,12 +1,15 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip_go/features/auth/controller/auth_controller.dart';
+import 'package:gossip_go/utils/colors.dart';
 
 class OTPTextField extends ConsumerWidget {
-  const OTPTextField({super.key, required this.verificationId});
+  const OTPTextField(this.camera, {super.key, required this.verificationId});
   final String verificationId;
+  final CameraDescription camera;
   static const border =
-      UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue));
+      UnderlineInputBorder(borderSide: BorderSide(color: tabColor));
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const hintText = '- - - - - -';
@@ -17,6 +20,7 @@ class OTPTextField extends ConsumerWidget {
         return SizedBox(
           width: width * 0.5,
           child: TextFormField(
+            cursorColor: tabColor,
             textAlign: TextAlign.center,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
@@ -30,7 +34,8 @@ class OTPTextField extends ConsumerWidget {
                 ref.read(authControllerProvider.notifier).verifyOtp(
                     context: context,
                     verificationId: verificationId,
-                    userOtp: value.trim());
+                    userOtp: value.trim(),
+                    camera: camera);
               }
             },
           ),

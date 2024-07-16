@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:gossip_go/features/auth/screens/error_screen/error_screen.dart';
 import 'package:gossip_go/features/auth/screens/landing_screen/view/landing_screen.dart';
@@ -13,6 +14,9 @@ import 'package:gossip_go/features/status/view/confirm_status_screen.dart';
 import 'package:gossip_go/features/status/view/show_status_screen.dart';
 import 'package:gossip_go/features/status/view/status_contacts_screen.dart';
 import 'package:gossip_go/models/status_model.dart';
+import 'package:gossip_go/screens/camera_screen.dart/view/confirm_picture_screen.dart';
+import 'package:gossip_go/screens/camera_screen.dart/view/send_picture_screen.dart';
+import 'package:gossip_go/screens/camera_screen.dart/view/take_picture_screen.dart';
 import 'package:gossip_go/screens/mobile_layout_screen/view/mobile_layout_screen.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) =>
@@ -21,7 +25,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) =>
           builder: (context) => const LoadingScreen(),
         ),
       LandingScreen.pageName => MaterialPageRoute(
-          builder: (context) => const LandingScreen(),
+          builder: (context) => LandingScreen(
+            camera: settings.arguments as CameraDescription,
+          ),
         ),
       LoginScreen.pageName => MaterialPageRoute(
           builder: (context) => const LoginScreen(),
@@ -35,8 +41,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) =>
           settings: settings,
         ),
       MobileLayoutScreen.pageName => MaterialPageRoute(
-          builder: (context) => const MobileLayoutScreen(),
-          settings: settings,
+          builder: (context) => MobileLayoutScreen(
+            camera: settings.arguments as CameraDescription,
+          ),
         ),
       SelectContactsScreen.pageName => MaterialPageRoute(
           builder: (context) => const SelectContactsScreen(),
@@ -71,6 +78,18 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) =>
               isGroupChat: callInfo['isGroupChat'],
             );
           },
+        ),
+      TakePictureScreen.pageName => MaterialPageRoute(
+          builder: (context) => TakePictureScreen(
+            camera: settings.arguments as CameraDescription,
+          ),
+        ),
+      ConfirmPicutureScreen.pageName => MaterialPageRoute(
+          builder: (context) => const ConfirmPicutureScreen(),
+          settings: settings),
+      SendPictureScreen.pageName => MaterialPageRoute(
+          builder: (context) => const SendPictureScreen(),
+          settings: settings,
         ),
       _ => MaterialPageRoute(
           builder: (context) => const ErrorScreen(),

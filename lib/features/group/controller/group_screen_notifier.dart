@@ -53,10 +53,11 @@ class GroupScreenNotifier extends Notifier<GroupScreenState> {
   void createGroup(BuildContext context) {
     if (groupNameController.text.trim().isNotEmpty && groupImage != null) {
       ref.read(groupRepositoryProvider).createGroup(
-          context: context,
-          groupName: groupNameController.text.trim(),
-          groupImage: groupImage!,
-          selectedContacts: selectedContacts);
+            context: context,
+            groupName: groupNameController.text.trim(),
+            groupImage: groupImage!,
+            selectedContacts: selectedContacts,
+          );
       selectedContacts = [];
       Navigator.pop(context);
     }

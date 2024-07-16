@@ -5,9 +5,11 @@ class MessageReply {
   final String message;
   final bool isMe;
   final MessageEnum messageType;
+  final String messageSenderName;
   MessageReply({
     required this.message,
     required this.isMe,
     required this.messageType,
+    required this.messageSenderName,
   });
 }

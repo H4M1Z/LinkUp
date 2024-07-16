@@ -14,7 +14,6 @@ class VideoPlayerWidget extends ConsumerStatefulWidget {
 
 class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   late final CachedVideoPlayerController videoController;
-
   @override
   void initState() {
     super.initState();
@@ -32,12 +31,11 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   }
 
   void _onBtnTap() {
-      ref.read(chatNotifierProvider.notifier).onPlayVideoTap(videoController);
-    }
+    ref.read(chatNotifierProvider.notifier).onPlayVideoTap(videoController);
+  }
 
   @override
   Widget build(BuildContext context) {
-    
     return AspectRatio(
       aspectRatio: 16 / 18,
       child: Stack(
