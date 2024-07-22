@@ -75,7 +75,7 @@ final class AuthController extends Notifier<AuthStates> {
       required String userOtp,
       required CameraDescription camera}) {
     try {
-      state = AuthLoadingState();
+      state = AuthOTPLoadingState();
       _authRepository
           .veriftyOtp(
               verificationId: verificationId,

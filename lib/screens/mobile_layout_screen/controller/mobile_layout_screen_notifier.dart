@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip_go/features/select_contacts/view/select_contacts_screen.dart';
 import 'package:gossip_go/features/status/view/confirm_status_screen.dart';
-import 'package:gossip_go/screens/contacts_screen/controller/mobile_layout_states.dart';
+import 'package:gossip_go/screens/mobile_layout_screen/controller/mobile_layout_states.dart';
 import 'package:gossip_go/utils/common_functions.dart';
 
 final mobileLayoutScreenProvider =
@@ -34,7 +34,7 @@ class MobileLayoutScreenNotifier extends Notifier<ContactsScreenStates> {
     state = ContactScreenLoadedState();
   }
 
-  onAddContatcsTap(BuildContext context) =>
+  _onAddContatcsTap(BuildContext context) =>
       Navigator.of(context).pushNamed(SelectContactsScreen.pageName);
 
   onAddStatusTap({
@@ -49,14 +49,12 @@ class MobileLayoutScreenNotifier extends Notifier<ContactsScreenStates> {
     }
   }
 
-  onCallTap() => '';
-
   void onFloatingActionButtonTap({
     required BuildContext context,
   }) {
     switch (bottomBarCurrentIndex) {
       case 0:
-        onAddContatcsTap(context);
+        _onAddContatcsTap(context);
         break;
       case 1:
         onAddStatusTap(context: context);

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip_go/features/auth/screens/error_screen/error_screen.dart';
-import 'package:gossip_go/features/auth/screens/loading_screen/loading_screen.dart';
 import 'package:gossip_go/features/select_contacts/controller/select_contacts_notifier.dart';
 import 'package:gossip_go/utils/colors.dart';
 import 'package:gossip_go/utils/strings.dart';
@@ -18,20 +17,6 @@ class SelectContactsScreen extends ConsumerWidget {
         scrolledUnderElevation: 0.0,
         backgroundColor: backgroundColor,
         title: const Text(selectContactsScreenAppBarTitle),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.search,
-                color: Colors.white,
-              )),
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ))
-        ],
       ),
       body: ref.watch(getContactsProvider).when(
             data: (contacts) {
@@ -62,7 +47,10 @@ class SelectContactsScreen extends ConsumerWidget {
               );
             },
             error: (error, stackTrace) => const ErrorScreen(),
-            loading: () => const LoadingScreen(),
+            loading: () => const Center(
+                child: CircularProgressIndicator(
+              color: tabColor,
+            )),
           ),
     );
   }

@@ -1,8 +1,7 @@
-import 'package:cached_video_player/cached_video_player.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gossip_go/features/chat/controller/chat_notifier.dart';
-import 'package:gossip_go/features/chat/widgets/video_player_icon_widget.dart';
+import 'package:video_player/video_player.dart';
 
 class VideoPlayerWidget extends ConsumerStatefulWidget {
   const VideoPlayerWidget({super.key, required this.videoUrl});
@@ -13,25 +12,37 @@ class VideoPlayerWidget extends ConsumerStatefulWidget {
 }
 
 class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
-  late final CachedVideoPlayerController videoController;
+  late final VideoPlayerController videoController;
+  late final ChewieController chewieContoller;
   @override
   void initState() {
     super.initState();
-    videoController = CachedVideoPlayerController.network(widget.videoUrl)
-      ..initialize().then(
+    videoController = VideoPlayerController.networkUrl(
+      Uri.parse(
+        widget.videoUrl,
+      ),
+    )..initialize().then(
         // the highest volume
         (value) => videoController.setVolume(1),
       );
+    chewieContoller = ChewieController(
+      videoPlayerController: videoController,
+      allowFullScreen: true,
+      allowMuting: true,
+      aspectRatio: 16 / 18,
+      materialProgressColors: ChewieProgressColors(
+        backgroundColor: Colors.grey.shade200,
+        handleColor: Colors.grey.shade400,
+        playedColor: Colors.green,
+      ),
+    );
   }
 
   @override
   void dispose() {
     videoController.dispose();
+    chewieContoller.dispose();
     super.dispose();
-  }
-
-  void _onBtnTap() {
-    ref.read(chatNotifierProvider.notifier).onPlayVideoTap(videoController);
   }
 
   @override
@@ -40,12 +51,9 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
       aspectRatio: 16 / 18,
       child: Stack(
         children: [
-          CachedVideoPlayer(
-            videoController,
+          Chewie(
+            controller: chewieContoller,
           ),
-          Center(
-            child: IconButton(onPressed: _onBtnTap, icon: const VideoIcon()),
-          )
         ],
       ),
     );

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class CallModel {
   final String callerId;
   final String callerName;
@@ -7,6 +8,7 @@ class CallModel {
   final String receiverPic;
   final String callId;
   final bool hasDialed;
+  final bool isGroupCall;
   CallModel({
     required this.callerId,
     required this.callerName,
@@ -16,6 +18,7 @@ class CallModel {
     required this.receiverPic,
     required this.callId,
     required this.hasDialed,
+    required this.isGroupCall,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +31,7 @@ class CallModel {
       'receiverPic': receiverPic,
       'callId': callId,
       'hasDialed': hasDialed,
+      'isGroupCall': isGroupCall,
     };
   }
 
@@ -41,6 +45,7 @@ class CallModel {
       receiverPic: map['receiverPic'] as String,
       callId: map['callId'] as String,
       hasDialed: map['hasDialed'] as bool,
+      isGroupCall: map['isGroupCall'] as bool,
     );
   }
 }

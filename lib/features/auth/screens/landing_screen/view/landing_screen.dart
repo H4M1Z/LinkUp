@@ -30,10 +30,13 @@ class LandingScreen extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: Center(
-                    child: Text(
-                      landingPageHeading,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: height * 0.04),
+                    child: FittedBox(
+                      child: Text(
+                        landingPageHeading,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: height * 0.04),
+                      ),
                     ),
                   )),
               Expanded(
@@ -50,6 +53,7 @@ class LandingScreen extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                     child: Text(
                       privacyPolicy,
+                      textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.grey),
                     ),
                   )),

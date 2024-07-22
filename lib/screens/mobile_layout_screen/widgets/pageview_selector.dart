@@ -2,8 +2,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip_go/features/status/view/status_contacts_screen.dart';
-import 'package:gossip_go/screens/contacts_screen/controller/mobile_layout_screen_notifier.dart';
 import 'package:gossip_go/screens/contacts_screen/view/contacts_page.dart';
+import 'package:gossip_go/screens/mobile_layout_screen/controller/mobile_layout_screen_notifier.dart';
 
 class PageViewHandler extends ConsumerWidget {
   const PageViewHandler({

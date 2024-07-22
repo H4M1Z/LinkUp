@@ -77,7 +77,6 @@ class MobileChatScreen extends ConsumerWidget {
           ],
         ),
         body: Column(
-          // emoji wala ka thora issue hay aur textField kay click pr ar emoji on hay ussay close kr dena hay
           children: [
             Expanded(
               child: ChatList(

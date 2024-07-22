@@ -10,6 +10,9 @@ abstract class AuthStates {
 final class AuthLoadingState extends AuthStates {}
 
 @immutable
+final class AuthOTPLoadingState extends AuthStates {}
+
+@immutable
 final class AuthLoadedState extends AuthStates {
   final UserModel? user;
   const AuthLoadedState({this.user});

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +16,6 @@ class MessageType extends ConsumerWidget {
   final bool isReply;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    log('message : $message');
     return switch (messageType) {
       MessageEnum.text => Text(
           maxLines: isReply ? 2 : null,
@@ -35,18 +32,6 @@ class MessageType extends ConsumerWidget {
           videoUrl: message,
         ),
       _ => AudioSlider(message: message),
-      // Row(
-      //     mainAxisSize: MainAxisSize.min,
-      //     children: [
-      //       GestureDetector(
-      //         onTap: () => ref
-      //             .read(chatNotifierProvider.notifier)
-      //             .onAudioIconTap(audioSource: message),
-      //         child: const AudioIcon(),
-      //       ),
-      //       const AudioSliderWidget()
-      //     ],
-      //   ),
     };
   }
 }

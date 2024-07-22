@@ -12,8 +12,7 @@ class CountryCodeText extends ConsumerWidget {
     return Text(
       ref.read(authControllerProvider.notifier).countryCode,
       style: TextStyle(
-        fontSize: height * 0.028,
-      ),
+          fontSize: height * 0.028, decoration: TextDecoration.underline),
     );
   }
 }

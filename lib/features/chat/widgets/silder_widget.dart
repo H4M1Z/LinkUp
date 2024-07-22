@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,7 +40,6 @@ class _AudioSliderState extends State<AudioSlider> {
   bool isPlaying = false;
   var duration = Duration.zero;
   var position = Duration.zero;
-
   @override
   void initState() {
     super.initState();
@@ -86,12 +83,11 @@ class _AudioSliderState extends State<AudioSlider> {
       mainAxisSize: MainAxisSize.min,
       children: [
         GestureDetector(
-          onTap: () {
+          onTap: () async {
             if (isPlaying) {
               player.pause();
             } else {
-              log('message in widget : ${widget.message}');
-              player.play(UrlSource(widget.message));
+              await player.play(UrlSource(widget.message));
             }
           },
           child: Icon(

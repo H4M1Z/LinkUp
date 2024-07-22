@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip_go/screens/camera_screen.dart/view/send_picture_screen.dart';
+import 'package:gossip_go/services/database_service.dart';
 import 'package:gossip_go/utils/colors.dart';
 
 class ConfirmPicutureScreen extends ConsumerWidget {
@@ -11,10 +14,9 @@ class ConfirmPicutureScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final file = ModalRoute.of(context)!.settings.arguments as File;
-
-    void addStatus() {
+    void sendPicture() async {
       Navigator.popAndPushNamed(context, SendPictureScreen.pageName,
-          arguments: file);
+          arguments: [file, await DBHelper().getAppUsers()]);
     }
 
     return Scaffold(
@@ -27,7 +29,7 @@ class ConfirmPicutureScreen extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: addStatus,
+        onPressed: sendPicture,
         backgroundColor: tabColor,
         focusColor: tabColor,
         splashColor: tabColor,

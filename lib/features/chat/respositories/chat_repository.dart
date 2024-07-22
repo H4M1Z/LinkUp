@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_it/get_it.dart';
 import 'package:gossip_go/features/providers/message_reply_provider/model/message_reply_model.dart';
 import 'package:gossip_go/models/chat_contact_model.dart';
 import 'package:gossip_go/models/group_model.dart';
@@ -21,6 +21,7 @@ import 'package:uuid/uuid.dart';
 final chatRepositoryProvider = Provider(
   (ref) => ChatRepository(
     firestore: FirebaseFirestore.instance,
+    auth: FirebaseAuth.instance,
   ),
 );
 
@@ -30,8 +31,10 @@ class ChatRepository {
   static const _messagesCollection = 'messages';
   static const _groupsCollection = 'groups';
   final FirebaseFirestore firestore;
+  final FirebaseAuth auth;
   ChatRepository({
     required this.firestore,
+    required this.auth,
   });
 
   void _saveDataToContactsSubCollection({
@@ -145,9 +148,8 @@ class ChatRepository {
     required MessageEnum repliedMessageType,
     required bool isGroupChat,
   }) async {
-    var currentUser = GetIt.I<UserModel>();
     var message = MessageModel(
-      senderId: currentUser.uid,
+      senderId: auth.currentUser!.uid,
       receiverId: groupOrReceiverId,
       senderName: senderUserName,
       message: text,
@@ -176,7 +178,7 @@ class ChatRepository {
       //the path fo us will be users/sender/receiever/messages/messageId/message
       await firestore
           .collection(_usersCollection)
-          .doc(currentUser.uid)
+          .doc(auth.currentUser!.uid)
           .collection(_chatsCollection)
           .doc(groupOrReceiverId)
           .collection(_messagesCollection)
@@ -187,17 +189,16 @@ class ChatRepository {
           .collection(_usersCollection)
           .doc(groupOrReceiverId)
           .collection(_chatsCollection)
-          .doc(currentUser.uid)
+          .doc(auth.currentUser!.uid)
           .collection(_messagesCollection)
           .doc(messageId)
           .set(message.toMap());
     }
   }
 
-  //! If there is is prolem in mobile_layout screen change to default
   Stream<List<ChatContactModel>> getChatContacts() {
     //we could use map but in this we are going too convert all the chats documents to our model and we will have to connect to firestore so we will use the async Map
-    var currentUser = GetIt.I<UserModel>();
+    var currentUser = auth.currentUser!;
     return firestore
         .collection(_usersCollection)
         .doc(currentUser.uid)
@@ -209,13 +210,6 @@ class ChatRepository {
         // we are getting the documnet snapshot and from that docSnapshot we will convert to chat model
         for (var doc in chats.docs) {
           var chatContact = ChatContactModel.fromMap(doc.data());
-          //this step can also be done but we can get the name form chat contact itself
-          // var userData = await firestore
-          //     .collection(_usersCollection)
-          //     .doc(chatContact.contactId)
-          //     .get();
-          // var user = UserModel.fromMap(userData.data()!);
-          //! Testing that if we can get the same thing using the chat contact or do we need the user
           listOfContacts.add(
             ChatContactModel(
               name: chatContact.name,
@@ -234,7 +228,7 @@ class ChatRepository {
   //this will get the groupChats
   Stream<List<GroupModel>> getGroupChats() {
     //we could use map but in this we are going too convert all the chats documents to our model
-    var currentUser = GetIt.I<UserModel>();
+    var currentUser = auth.currentUser!;
     return firestore.collection(_groupsCollection).snapshots().map(
       (groups) {
         List<GroupModel> listOfGroups = [];
@@ -260,7 +254,7 @@ class ChatRepository {
   }
 
   Stream<List<MessageModel>> getContactMessages({required String receiverId}) {
-    var currentUser = GetIt.I<UserModel>();
+    var currentUser = auth.currentUser!;
     return firestore
         .collection(_usersCollection)
         .doc(currentUser.uid)
@@ -317,7 +311,8 @@ class ChatRepository {
       var imageUrl = await ref
           .read(firebaseStorageRepositoryProvider)
           .saveFileToStorage(
-              path: 'chat/$messageType/${senderUserData.uid}/$receiverUserId',
+              path:
+                  'chat/$messageType/${senderUserData.uid}/$receiverUserId/${file.hashCode}',
               file: file);
       UserModel? receiverUserData;
       if (!isGroupChat) {
@@ -358,6 +353,7 @@ class ChatRepository {
       );
     } catch (e) {
       showSnackBar(context: context, data: e.toString());
+      log(e.toString());
     }
   }
 
@@ -416,10 +412,9 @@ class ChatRepository {
   }) async {
     try {
       //the path fo us will be users/sender/receiever/messages/messageId/message
-      var currentUser = GetIt.I<UserModel>();
       await firestore
           .collection(_usersCollection)
-          .doc(currentUser.uid)
+          .doc(auth.currentUser!.uid)
           .collection(_chatsCollection)
           .doc(receiverUserId)
           .collection(_messagesCollection)
@@ -434,7 +429,7 @@ class ChatRepository {
           .collection(_usersCollection)
           .doc(receiverUserId)
           .collection(_chatsCollection)
-          .doc(currentUser.uid)
+          .doc(auth.currentUser!.uid)
           .collection(_messagesCollection)
           .doc(messageId)
           .update(

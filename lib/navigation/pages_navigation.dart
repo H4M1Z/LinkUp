@@ -2,7 +2,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:gossip_go/features/auth/screens/error_screen/error_screen.dart';
 import 'package:gossip_go/features/auth/screens/landing_screen/view/landing_screen.dart';
-import 'package:gossip_go/features/auth/screens/loading_screen/loading_screen.dart';
 import 'package:gossip_go/features/auth/screens/login_screen/view/login_screen.dart';
 import 'package:gossip_go/features/auth/screens/otp_screen/view/otp_screen.dart';
 import 'package:gossip_go/features/auth/screens/user_information_screen/view/user_information_screen.dart';
@@ -21,9 +20,6 @@ import 'package:gossip_go/screens/mobile_layout_screen/view/mobile_layout_screen
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) =>
     switch (settings.name) {
-      LoadingScreen.pageName => MaterialPageRoute(
-          builder: (context) => const LoadingScreen(),
-        ),
       LandingScreen.pageName => MaterialPageRoute(
           builder: (context) => LandingScreen(
             camera: settings.arguments as CameraDescription,
@@ -31,6 +27,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) =>
         ),
       LoginScreen.pageName => MaterialPageRoute(
           builder: (context) => const LoginScreen(),
+          settings: settings,
         ),
       OTPScreen.pageName => MaterialPageRoute(
           builder: (context) => const OTPScreen(),
@@ -68,11 +65,13 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) =>
         ),
       CreateGroupScreen.pageName => MaterialPageRoute(
           builder: (context) => const CreateGroupScreen(),
+          settings: settings,
         ),
       CallScreen.pageName => MaterialPageRoute(
           builder: (context) {
             var callInfo = settings.arguments as Map<String, dynamic>;
             return CallScreen(
+              isCalling: callInfo['isCalling'],
               channelName: callInfo['channelName'],
               call: callInfo['call'],
               isGroupChat: callInfo['isGroupChat'],

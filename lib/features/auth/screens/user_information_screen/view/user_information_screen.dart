@@ -1,15 +1,10 @@
-import 'dart:developer';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_it/get_it.dart';
 import 'package:gossip_go/features/auth/controller/auth_controller.dart';
 import 'package:gossip_go/features/auth/controller/auth_states.dart';
 import 'package:gossip_go/features/auth/screens/widgets/user_info_screen_text_field.dart';
 import 'package:gossip_go/features/auth/screens/widgets/user_profile_image_widget.dart';
-import 'package:gossip_go/models/user_model.dart';
 import 'package:gossip_go/utils/colors.dart';
 
 class UserInformationScreen extends ConsumerWidget {
@@ -20,19 +15,6 @@ class UserInformationScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var camera =
         ModalRoute.of(context)!.settings.arguments as CameraDescription;
-    SchedulerBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        ref.watch(userProvider).whenData(
-          (user) {
-            if (user != null) {
-              GetIt.I.registerSingleton<UserModel>(user);
-            } else {
-              log('user is null');
-            }
-          },
-        );
-      },
-    );
     void onAddImageTap() =>
         ref.read(authControllerProvider.notifier).pickImage(context: context);
     void saveUserData() {

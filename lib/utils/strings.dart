@@ -5,7 +5,7 @@ const bottomBarStories = 'Stories';
 const bottomBarCalls = 'Calls';
 const landingPageHeading = 'Welcome to Gossip Go';
 const privacyPolicy =
-    'Read our Privacy Policy. Tap "Agree and continue" to \n                    accept the terms of Service ';
+    'Read our Privacy Policy. Tap "Agree and continue" to accept the terms of Service ';
 const loginAppBarTitle = 'Enter your phone number';
 const otpScreenAppBarTitle = 'Verify your phone number';
 const selectContactsScreenAppBarTitle = 'Select contact';

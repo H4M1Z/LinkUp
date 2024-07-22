@@ -4,10 +4,10 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip_go/features/auth/controller/auth_controller.dart';
 import 'package:gossip_go/features/call/screens/call_pickup_screen.dart';
-import 'package:gossip_go/screens/contacts_screen/controller/mobile_layout_screen_notifier.dart';
-import 'package:gossip_go/screens/contacts_screen/widgets/bottom_navigation_bar.dart';
-import 'package:gossip_go/screens/contacts_screen/widgets/fab_icon.dart';
-import 'package:gossip_go/screens/contacts_screen/widgets/pageview_selector.dart';
+import 'package:gossip_go/screens/mobile_layout_screen/controller/mobile_layout_screen_notifier.dart';
+import 'package:gossip_go/screens/mobile_layout_screen/widgets/bottom_navigation_bar.dart';
+import 'package:gossip_go/screens/mobile_layout_screen/widgets/fab_icon.dart';
+import 'package:gossip_go/screens/mobile_layout_screen/widgets/pageview_selector.dart';
 import 'package:gossip_go/utils/colors.dart';
 
 class MobileLayoutScreen extends ConsumerStatefulWidget {

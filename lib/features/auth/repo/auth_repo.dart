@@ -93,7 +93,6 @@ class AuthRepository {
       required NotifierProviderRef ref,
       required BuildContext context,
       required CameraDescription camera}) async {
-    // we have to uplaod the image to firebase storage and it will give us a download url and we need to store it in the firestore we will use the same uid to store it to storage and firestore as well
     try {
       String uid = auth.currentUser!.uid;
       String profileImage =

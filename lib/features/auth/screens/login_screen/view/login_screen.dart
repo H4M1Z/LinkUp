@@ -41,7 +41,10 @@ class LoginScreen extends ConsumerWidget {
               const Expanded(
                 flex: 1,
                 child: Center(
-                  child: Text(verifyText),
+                  child: Text(
+                    verifyText,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
               Expanded(
@@ -71,7 +74,7 @@ class LoginScreen extends ConsumerWidget {
                             alignment: Alignment.topRight,
                             child: Padding(
                               padding: EdgeInsets.only(
-                                  top: height * 0.03, right: width * 0.02),
+                                  top: height * 0.037, right: width * 0.02),
                               child: const CountryCodeText(),
                             ))),
                     const Expanded(
@@ -88,8 +91,10 @@ class LoginScreen extends ConsumerWidget {
               builder: (context) {
                 var state = ref.watch(authControllerProvider);
                 if (state is AuthLoadingState) {
-                  return const CircularProgressIndicator(
-                    color: tabColor,
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: tabColor,
+                    ),
                   );
                 } else {
                   return const SizedBox();

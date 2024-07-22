@@ -23,8 +23,6 @@ class SelectContactRepository {
     required this.firestore,
   });
 
-  final contactsNumber = <String>[];
-
   Future<List<Contact>> getContacts() async {
     List<Contact> contacts = [];
     try {
@@ -44,7 +42,6 @@ class SelectContactRepository {
           } else {
             phoneNumber = contacts[i].phones[0].number.replaceAll(' ', '');
           }
-          contactsNumber.add(phoneNumber);
         }
       }
     } catch (e) {
@@ -61,20 +58,10 @@ class SelectContactRepository {
       bool isFound = false;
       for (var document in usersCollection.docs) {
         var user = UserModel.fromMap(document.data());
-        //user can have multiple phone numbers and if we set the with properties attr to fasle in the above fuc than the number attr here will be an empty string or null
-        print(selectedContact.phones[0].number.replaceAll(' ', ''));
-        //we are doing tis to ensure that there is no space in between the number becoz the number in the firebase have no space so we need to replace the space
-        String phoneNumber = '';
-
-        if (selectedContact.phones[0].number.startsWith('0')) {
-          log('number starts with zero');
-          phoneNumber =
-              selectedContact.phones[0].number.replaceFirst(RegExp('0'), '+92');
-          phoneNumber = phoneNumber.replaceAll(' ', '');
-        } else {
-          phoneNumber = selectedContact.phones[0].number.replaceAll(' ', '');
-        }
-
+        //user can have multiple phone numbers and if we set the with properties attr to fasle in the above func than the number attr here will be an empty string or null
+        String phoneNumber =
+            getPhoneNumber(number: selectedContact.phones[0].number);
+        log('selected number : $phoneNumber');
         if (user.phoneNumber == phoneNumber) {
           isFound = true;
           Navigator.of(context).pushNamed(

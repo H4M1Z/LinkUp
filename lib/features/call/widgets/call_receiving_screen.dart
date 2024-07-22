@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gossip_go/features/call/controller/call_notifier.dart';
 import 'package:gossip_go/features/call/screens/call_screen.dart';
 import 'package:gossip_go/models/call_model.dart';
 
@@ -47,8 +48,10 @@ class CallReceivingScreen extends ConsumerWidget {
                 alignment: Alignment.topCenter,
                 child: Text(
                   incomingCall,
-                  style:
-                      TextStyle(color: Colors.grey, fontSize: height * 0.025),
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: height * 0.025,
+                  ),
                 ),
               ),
             ),
@@ -63,7 +66,13 @@ class CallReceivingScreen extends ConsumerWidget {
                       flex: 1,
                       child: Center(
                         child: RejectReciveCallBtn(
-                            onTap: () {},
+                            onTap: () {
+                              ref.read(callNotifierProvider.notifier).endCall(
+                                  context: context,
+                                  callerId: callInfo.callerId,
+                                  callReceiverId: callInfo.receiverId,
+                                  isGroupCall: callInfo.isGroupCall);
+                            },
                             btnIcon: Icons.call_end_rounded,
                             iconColor: Colors.red,
                             backgroundColor: Colors.black54),
@@ -78,9 +87,13 @@ class CallReceivingScreen extends ConsumerWidget {
                                 arguments: {
                                   'channelName': callInfo.callId,
                                   'call': callInfo,
-                                  'isGroupChat': false,
+                                  'isGroupChat': callInfo.isGroupCall,
+                                  'isCalling': false,
                                 },
                               );
+                              ref
+                                  .read(callNotifierProvider.notifier)
+                                  .shouldPopScreen(true);
                             },
                             btnIcon: Icons.call,
                             iconColor: Colors.white,

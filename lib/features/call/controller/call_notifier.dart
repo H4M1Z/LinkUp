@@ -19,6 +19,8 @@ class CallNotifier extends Notifier<CallState> {
     return CallInitialState();
   }
 
+  var shouldPop = false;
+
 //this stream will continously check in the calls subcollection that if there is a call with the user id in it so that the call screen will pop up
 
   Stream<DocumentSnapshot> get callStream =>
@@ -43,8 +45,9 @@ class CallNotifier extends Notifier<CallState> {
             receiverName: callReceiverName,
             receiverPic: callReceievrPic,
             callId: callId,
-            hasDialed: true);
-        // all the data will be same other than tha dialed one
+            hasDialed: true,
+            isGroupCall: isGroupChat);
+        // all the data will be same other than than dialed one
         CallModel callReceiverData = CallModel(
             callerId: currentUser.uid,
             callerName: currentUser.name,
@@ -53,7 +56,8 @@ class CallNotifier extends Notifier<CallState> {
             receiverName: callReceiverName,
             receiverPic: callReceievrPic,
             callId: callId,
-            hasDialed: false);
+            hasDialed: false,
+            isGroupCall: isGroupChat);
         if (isGroupChat) {
           ref.read(callRepositoryProvider).makeGroupCall(
               context: context,
@@ -65,15 +69,27 @@ class CallNotifier extends Notifier<CallState> {
               callerData: callerData,
               callReceiverData: callReceiverData);
         }
+        shouldPop = true;
       },
     );
   }
 
-  void endCall(
-      {required BuildContext context,
-      required String callerId,
-      required callReceiverId}) {
-    ref.read(callRepositoryProvider).endCall(
-        context: context, callerId: callerId, callReceiverId: callReceiverId);
+  void endCall({
+    required BuildContext context,
+    required String callerId,
+    required callReceiverId,
+    required bool isGroupCall,
+  }) {
+    if (isGroupCall) {
+      ref.read(callRepositoryProvider).endGroupCall(
+          context: context, callerId: callerId, callReceiverId: callReceiverId);
+    } else {
+      ref.read(callRepositoryProvider).endCall(
+          context: context, callerId: callerId, callReceiverId: callReceiverId);
+    }
+  }
+
+  void shouldPopScreen(bool shouldPopScreen) {
+    shouldPop = shouldPopScreen;
   }
 }

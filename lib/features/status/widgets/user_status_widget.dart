@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:gossip_go/features/status/controller/status_notifier.dart';
 import 'package:gossip_go/features/status/widgets/user_status_tile.dart';
 import 'package:gossip_go/models/user_model.dart';
-import 'package:gossip_go/screens/contacts_screen/controller/mobile_layout_screen_notifier.dart';
+import 'package:gossip_go/screens/mobile_layout_screen/controller/mobile_layout_screen_notifier.dart';
 
 class UserStatusWidget extends ConsumerWidget {
   const UserStatusWidget({super.key});

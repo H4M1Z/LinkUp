@@ -28,8 +28,12 @@ class MessageReplyView extends ConsumerWidget {
         height: height * 0.13,
         padding: const EdgeInsets.all(8.0),
         decoration: const BoxDecoration(
-            color: mobileChatBoxColor,
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(10))),
+          color: mobileChatBoxColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
         child: Container(
           width: width * 0.5,
           decoration: BoxDecoration(
@@ -74,9 +78,12 @@ class MessageReplyView extends ConsumerWidget {
                       ),
                       GestureDetector(
                         onTap: onCancleBtnTap,
-                        child: Icon(
-                          Icons.clear,
-                          size: height * 0.02,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.clear,
+                            size: height * 0.02,
+                          ),
                         ),
                       )
                     ],

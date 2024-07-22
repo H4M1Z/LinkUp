@@ -52,7 +52,7 @@ class OTPScreen extends ConsumerWidget {
           Builder(
             builder: (context) {
               var state = ref.watch(authControllerProvider);
-              if (state is AuthLoadingState) {
+              if (state is AuthOTPLoadingState) {
                 return const CircularProgressIndicator(
                   color: tabColor,
                 );

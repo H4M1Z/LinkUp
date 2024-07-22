@@ -19,7 +19,7 @@ class LoginPageTextField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const border = UnderlineInputBorder(
-      borderSide: BorderSide(color: Colors.grey),
+      borderSide: BorderSide(color: tabColor),
     );
     return LayoutBuilder(
       builder: (context, constraints) => SizedBox(
@@ -31,14 +31,14 @@ class LoginPageTextField extends ConsumerWidget {
               ref.read(authControllerProvider.notifier).loginFieldController,
           cursorColor: tabColor,
           style: TextStyle(
-              fontSize: constraints.maxHeight * 0.038,
+              fontSize: constraints.maxHeight * 0.05,
               decoration: TextDecoration.none),
           decoration: InputDecoration(
               border: border,
               enabledBorder: border,
               focusedBorder: border,
               contentPadding:
-                  EdgeInsets.only(top: constraints.maxHeight * 0.04),
+                  EdgeInsets.only(top: constraints.maxHeight * 0.055),
               hintText: hintText,
               hintStyle: TextStyle(
                   color: Colors.grey.shade600,

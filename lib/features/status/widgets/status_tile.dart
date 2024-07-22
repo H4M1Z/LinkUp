@@ -30,9 +30,7 @@ class StatusTile extends ConsumerWidget {
         style: titleStyle,
       ),
       subtitle: Text(
-        DateFormat().add_Hm().format(
-              status.createdTime,
-            ),
+        DateFormat("h:mma").format(status.createdTime),
         style: subtitleStyle,
       ),
     );

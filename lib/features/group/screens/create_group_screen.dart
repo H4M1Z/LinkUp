@@ -4,6 +4,7 @@ import 'package:gossip_go/features/group/controller/group_screen_notifier.dart';
 import 'package:gossip_go/features/group/widgets/group_image_widget.dart';
 import 'package:gossip_go/features/group/widgets/group_name_field.dart';
 import 'package:gossip_go/features/group/widgets/select_group_contacts_widget.dart';
+import 'package:gossip_go/models/user_model.dart';
 import 'package:gossip_go/utils/colors.dart';
 import 'package:gossip_go/utils/strings.dart';
 
@@ -16,6 +17,8 @@ class CreateGroupScreen extends ConsumerWidget {
     final Size(:width, :height) = MediaQuery.sizeOf(context);
     void onAddImageTap() =>
         ref.read(groupScreenNotifierProvider.notifier).pickGroupImage(context);
+    var appUsers =
+        ModalRoute.of(context)?.settings.arguments as List<UserModel>;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -58,18 +61,20 @@ class CreateGroupScreen extends ConsumerWidget {
             flex: 1,
             child: Padding(
               padding: EdgeInsets.only(left: width * 0.04, top: height * 0.03),
-              child: Text(
-                selectContacts,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: height * 0.028),
+              child: FittedBox(
+                child: Text(
+                  selectContacts,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: height * 0.028),
+                ),
               ),
             ),
           ),
-          const Expanded(
+          Expanded(
             flex: 8,
-            child: GroupContacts(),
+            child: GroupContacts(appUsers: appUsers),
           ),
         ],
       ),

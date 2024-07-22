@@ -52,6 +52,7 @@ class CallRepository {
           'channelName': callerData.callId,
           'call': callerData,
           'isGroupChat': false,
+          'isCalling': true,
         },
       );
     } catch (e) {
@@ -65,7 +66,7 @@ class CallRepository {
     required String callReceiverId,
   }) async {
     try {
-      //first of all we need to store the call information in the call collection with the documnet of the caller id and for the receiver id also so that both will listen to the same stream
+      //we will delete both the documents of the caller and call recveier so that the stream cannot find a call with our uid
       await firestore.collection(_callsCollection).doc(callerId).delete();
       await firestore.collection(_callsCollection).doc(callReceiverId).delete();
     } catch (e) {
@@ -106,6 +107,7 @@ class CallRepository {
           'channelName': callerData.callId,
           'call': callerData,
           'isGroupChat': true,
+          'isCalling': true,
         },
       );
     } catch (e) {
@@ -119,7 +121,6 @@ class CallRepository {
     required String callReceiverId,
   }) async {
     try {
-      //first of all we need to store the call information in the call collection with the documnet of the caller id and for the receiver id also so that both will listen to the same stream
       await firestore.collection(_callsCollection).doc(callerId).delete();
 
       var groupData = await firestore

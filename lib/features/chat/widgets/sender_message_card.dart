@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:gossip_go/features/chat/widgets/message_type_widget.dart';
 import 'package:gossip_go/features/chat/widgets/my_message_card.dart';
@@ -29,8 +27,6 @@ class SenderMessageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isReplying = repliedText.isNotEmpty;
     final Size(:width, :height) = MediaQuery.sizeOf(context);
-    const max = 255;
-    final Random random = Random();
     return SwipeTo(
       onRightSwipe: onRightSwipe,
       child: Align(
@@ -139,12 +135,7 @@ class SenderMessageCard extends StatelessWidget {
                     child: Text(
                       senderUserName,
                       style: TextStyle(
-                        color: Color.fromARGB(
-                          random.nextInt(max),
-                          random.nextInt(max),
-                          random.nextInt(max),
-                          random.nextInt(max),
-                        ),
+                        color: Colors.yellow.shade700,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

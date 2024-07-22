@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:audioplayers_platform_interface/src/api/player_state.dart'
     as playersState;
-import 'package:cached_video_player/cached_video_player.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,6 +40,7 @@ class ChatNotifer extends Notifier<ChatScreenStates> {
   var chatContacts = <ChatContactModel>[];
   //cached messages
   var messages = <MessageModel>[];
+  int count = 1;
 
   //!Video
   //should play video or not
@@ -209,13 +210,18 @@ class ChatNotifer extends Notifier<ChatScreenStates> {
     String? audioPath,
     required bool isGroupChat,
   }) async {
+    log('Audio Path : $audioPath');
     File? file = switch (messageType) {
       MessageEnum.image => await pickImageFromGallery(context: context),
       MessageEnum.video => await pickVideoFromGallery(context: context),
       _ => File(audioPath!),
     };
+
     // if selected file is not equal to null only then we will send data to firestore
     if (file != null) {
+      file.createSync();
+      // bool exists = await file.exists();
+      // log('File Exists : $exists');
       var replyingState = ref.read(messageReplyProvider);
       if (replyingState is MessageReplyLoadedState) {
         ref.read(userProvider).whenData(
@@ -289,21 +295,6 @@ class ChatNotifer extends Notifier<ChatScreenStates> {
     }
   }
 
-  // to play and pause video
-  void onPlayVideoTap(CachedVideoPlayerController videoController) {
-    state = ChatLoadingState();
-    if (shouldPlay) {
-      videoIcon = Icons.play_circle_fill_outlined;
-      shouldPlay = false;
-      videoController.pause();
-    } else {
-      videoIcon = Icons.pause_circle_filled_outlined;
-      shouldPlay = true;
-      videoController.play();
-    }
-    state = ChatLoadedState();
-  }
-
   // show the emoji in the text field
   void onEmojiSelected(Category? category, Emoji emoji) {
     state = ChatLoadingState();
@@ -351,6 +342,7 @@ class ChatNotifer extends Notifier<ChatScreenStates> {
     //in the start recorder function we need to give the directory or path to where we want to store the recording
     var tempDir = await getTemporaryDirectory();
     var recordingPath = '${tempDir.path}/flutter_audio_recordings.aac';
+    count++;
     if (isRecording) {
       await _soundRecorder!.stopRecorder();
       sendFileMessage(

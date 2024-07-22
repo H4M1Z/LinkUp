@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip_go/screens/camera_screen.dart/controller/camera_notifier.dart';
@@ -9,13 +7,11 @@ import 'package:gossip_go/utils/colors.dart';
 class SendPictureScreen extends ConsumerWidget {
   const SendPictureScreen({super.key});
   static const pageName = '/send-picture-screen';
-  static const usersList = [
-    'LPZjg3YaayPJicchecbw26HqxbY2',
-    'x3fELe83UzNMgNdvdkOQf9LqATE3'
-  ];
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var file = ModalRoute.of(context)!.settings.arguments as File;
+    var arguments = ModalRoute.of(context)?.settings.arguments as List;
+    var file = arguments[0];
+    var appusers = arguments[1];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Send To'),
@@ -25,13 +21,13 @@ class SendPictureScreen extends ConsumerWidget {
       ),
       body: Center(
         child: ListView.builder(
-          itemCount: usersList.length,
+          itemCount: appusers.length,
           itemBuilder: (context, index) {
             return ListTile(
               onTap: () => ref
                   .read(cameraNotifierProvider.notifier)
-                  .onTileTap(index, usersList[index]),
-              title: Text(usersList[index]),
+                  .onTileTap(index, appusers[index].uid),
+              title: Text(appusers[index].name),
               trailing: ListTileTrailingWidget(index),
             );
           },
