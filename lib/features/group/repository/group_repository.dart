@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_it/get_it.dart';
 import 'package:gossip_go/models/group_model.dart';
 import 'package:gossip_go/models/user_model.dart';
 import 'package:gossip_go/repositories/firebase_storage_repo.dart';
@@ -34,7 +34,7 @@ class GroupRepository {
   }) async {
     try {
       //first we will check if the user with the selected contact is in the app or not
-      var currentUser = GetIt.I<UserModel>();
+      var currentUser = FirebaseAuth.instance.currentUser!;
       List<String> groupUsersUids = [currentUser.uid];
       List<String> groupMemberNames = [];
       for (var i = 0; i < selectedContacts.length; i++) {

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +10,7 @@ import 'package:gossip_go/features/status/controller/status_states.dart';
 import 'package:gossip_go/features/status/repositories/status_repository.dart';
 import 'package:gossip_go/features/status/view/show_status_screen.dart';
 import 'package:gossip_go/models/status_model.dart';
+import 'package:gossip_go/models/user_model.dart';
 import 'package:story_view/controller/story_controller.dart';
 import 'package:story_view/utils.dart';
 import 'package:story_view/widgets/story_view.dart';
@@ -21,6 +24,7 @@ class StatusNotifier extends Notifier<StatusStates> {
   List<StoryItem> storyItems = [];
   var chachedStatuses = <StatusModel>[];
   StatusModel? chahcedUserStatuses;
+  String? userPfp;
 
   @override
   StatusStates build() {
@@ -85,5 +89,15 @@ class StatusNotifier extends Notifier<StatusStates> {
     if (direction == Direction.down) {
       Navigator.pop(context);
     }
+  }
+
+  void setCurrentUser() async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then(
+          (value) => userPfp = UserModel.fromMap(value.data()!).profilePic,
+        );
   }
 }

@@ -2,12 +2,10 @@ import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_it/get_it.dart';
 import 'package:gossip_go/features/auth/controller/auth_controller.dart';
 import 'package:gossip_go/features/auth/screens/error_screen/error_screen.dart';
 import 'package:gossip_go/features/auth/screens/landing_screen/view/landing_screen.dart';
 import 'package:gossip_go/firebase_options.dart';
-import 'package:gossip_go/models/user_model.dart';
 import 'package:gossip_go/navigation/pages_navigation.dart';
 import 'package:gossip_go/screens/mobile_layout_screen/view/mobile_layout_screen.dart';
 import 'package:gossip_go/screens/splash_screen.dart/view/splash_screen.dart';
@@ -60,7 +58,6 @@ class MyApp extends ConsumerWidget {
                   camera: camera,
                 );
               } else {
-                GetIt.I.registerSingleton<UserModel>(user);
                 return MobileLayoutScreen(
                   camera: camera,
                 );

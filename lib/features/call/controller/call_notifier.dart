@@ -2,12 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_it/get_it.dart';
 import 'package:gossip_go/features/auth/controller/auth_controller.dart';
 import 'package:gossip_go/features/call/controller/call_states.dart';
 import 'package:gossip_go/features/call/repository/call_repository.dart';
 import 'package:gossip_go/models/call_model.dart';
-import 'package:gossip_go/models/user_model.dart';
 import 'package:uuid/uuid.dart';
 
 final callNotifierProvider =
@@ -35,12 +33,11 @@ class CallNotifier extends Notifier<CallState> {
       required bool isGroupChat}) {
     ref.read(userProvider).whenData(
       (caller) {
-        final currentUser = GetIt.I<UserModel>();
         String callId = const Uuid().v1();
         CallModel callerData = CallModel(
-            callerId: currentUser.uid,
-            callerName: currentUser.name,
-            callerPic: currentUser.profilePic,
+            callerId: caller!.uid,
+            callerName: caller.name,
+            callerPic: caller.profilePic,
             receiverId: callReceiverUid,
             receiverName: callReceiverName,
             receiverPic: callReceievrPic,
@@ -49,9 +46,9 @@ class CallNotifier extends Notifier<CallState> {
             isGroupCall: isGroupChat);
         // all the data will be same other than than dialed one
         CallModel callReceiverData = CallModel(
-            callerId: currentUser.uid,
-            callerName: currentUser.name,
-            callerPic: currentUser.profilePic,
+            callerId: caller.uid,
+            callerName: caller.name,
+            callerPic: caller.profilePic,
             receiverId: callReceiverUid,
             receiverName: callReceiverName,
             receiverPic: callReceievrPic,

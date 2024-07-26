@@ -33,11 +33,13 @@ class UserNameAndStatus extends ConsumerWidget {
                       flex: 10,
                       child: Align(
                         alignment: Alignment.bottomLeft,
-                        child: Text(
-                          name,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: height * 0.025,
+                        child: FittedBox(
+                          child: Text(
+                            name,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: height * 0.025,
+                            ),
                           ),
                         ),
                       ),

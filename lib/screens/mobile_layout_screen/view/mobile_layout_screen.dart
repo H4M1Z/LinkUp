@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip_go/features/auth/controller/auth_controller.dart';
 import 'package:gossip_go/features/call/screens/call_pickup_screen.dart';
+import 'package:gossip_go/features/status/controller/status_notifier.dart';
 import 'package:gossip_go/screens/mobile_layout_screen/controller/mobile_layout_screen_notifier.dart';
 import 'package:gossip_go/screens/mobile_layout_screen/widgets/bottom_navigation_bar.dart';
 import 'package:gossip_go/screens/mobile_layout_screen/widgets/fab_icon.dart';
@@ -33,7 +34,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    //in this function we will determine wether user is online or offline adn we manage this in the auth repo
+    //in this function we will determine wether user is online or offline and we manage this in the auth repo
     super.didChangeAppLifecycleState(state);
     switch (state) {
       case AppLifecycleState.detached:
@@ -62,6 +63,9 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
   Widget build(BuildContext context) {
     final Size(:height) = MediaQuery.sizeOf(context);
     final pageViewController = PageController(initialPage: 0);
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) => ref.read(statusNotifierProvider.notifier).setCurrentUser(),
+    );
     return CallPickUpScreen(
       scaffold: Scaffold(
         body: PageViewHandler(

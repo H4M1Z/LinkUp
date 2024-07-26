@@ -7,9 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_it/get_it.dart';
 import 'package:gossip_go/models/status_model.dart';
-import 'package:gossip_go/models/user_model.dart';
 import 'package:gossip_go/repositories/firebase_storage_repo.dart';
 import 'package:gossip_go/services/database_service.dart';
 import 'package:gossip_go/utils/common_functions.dart';
@@ -46,7 +44,7 @@ class StatusRepository {
        */
 
       var statusId = const Uuid().v1();
-      var currentUser = GetIt.I<UserModel>();
+      var currentUser = FirebaseAuth.instance.currentUser!;
       var db = DBHelper();
       //we are going to store the status in the status folder and with the status and usr id
       var imageUrl =
@@ -163,7 +161,7 @@ class StatusRepository {
           }
         }
       }
-      log('statuses fetched');
+      log('statuses fetched'); 
     } catch (e) {
       log('status Error : ${e.toString()}');
       showSnackBar(context: context, data: e.toString());
